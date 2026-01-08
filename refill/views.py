@@ -72,24 +72,43 @@ def register(request):
             password = password,
             email = email
         )
-        login(request, user)
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
         return redirect("home")
     
     return render(request, "register.html")
+
 
 
 def login_view(request):
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
+
         
         user = authenticate(request, username=username , password=password)
         
         if user:
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+
+
+        user = authenticate(
+            request,
+            username=username,
+            password=password
+        )
+
+        if user is not None:
+            login(
+                request,
+                user,
+                backend='django.contrib.auth.backends.ModelBackend'
+            )
             return redirect("home")
         else:
-            return render(request, "login.html",{"error":"Invalid Credentials"})
+            return render(request, "login.html", {
+                "error": "Invalid Credentials"
+            })
+
     return render(request, "login.html")
 
 

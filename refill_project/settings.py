@@ -11,16 +11,17 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+import os
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ks%wm^o=8ql@d^onr4r#701vhc5+muj)2pbv%rwt)bfxfkn8eg'
+SECRET_KEY = config('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -133,6 +134,8 @@ AUTHENTICATION_BACKENDS =[
     'axes.backends.AxesStandaloneBackend',
     'django.contrib.auth.backends.ModelBackend',   
 ]
+
+
 
 AXES_FAILURE_LIMIT = 5
 AXES_COOLOFF_TIME = 1
