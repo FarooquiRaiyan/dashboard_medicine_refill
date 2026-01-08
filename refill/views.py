@@ -86,7 +86,7 @@ def login_view(request):
         user = authenticate(request, username=username , password=password)
         
         if user:
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect("home")
         else:
             return render(request, "login.html",{"error":"Invalid Credentials"})
