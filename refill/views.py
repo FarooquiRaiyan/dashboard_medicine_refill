@@ -15,6 +15,7 @@ def home(request):
         user=request.user,
         is_read=False
     ).order_by('-created_at')
+    
 
     if request.method == "POST":
         form = MedicineDetailsforms(request.POST)

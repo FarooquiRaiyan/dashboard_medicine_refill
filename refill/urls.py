@@ -1,5 +1,10 @@
 from django.urls import path
+from django.http import HttpResponse
 from .views import home, edit, delete, login_view, logout_view, register
+
+
+
+
 
 urlpatterns = [
     path('',home, name='home'),
