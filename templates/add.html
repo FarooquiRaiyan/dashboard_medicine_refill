@@ -17,7 +17,7 @@
             color: #333;
         }
 
-        /* NAVBAR */
+        /* ---------- NAVBAR ---------- */
         .navbar {
             background: #4CAF50;
             color: white;
@@ -25,6 +25,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .navbar h2 {
@@ -36,23 +37,24 @@
             color: white;
             text-decoration: none;
             font-weight: bold;
+            margin-left: 10px;
         }
 
-        /* MAIN CONTAINER */
+        /* ---------- CONTAINER ---------- */
         .container {
             max-width: 1200px;
             margin: auto;
             padding: 24px;
         }
 
-        /* GRID */
+        /* ---------- GRID ---------- */
         .grid {
             display: grid;
             grid-template-columns: 1fr 2fr;
             gap: 24px;
         }
 
-        /* CARD */
+        /* ---------- CARD ---------- */
         .card {
             background: #ffffff;
             padding: 24px;
@@ -94,7 +96,7 @@
             background-color: #43a047;
         }
 
-        /* TABLE */
+        /* ---------- TABLE ---------- */
         .table-wrapper {
             overflow-x: auto;
         }
@@ -122,7 +124,7 @@
             background: #f9f9f9;
         }
 
-        /* STATUS */
+        /* ---------- STATUS ---------- */
         .status-safe {
             color: green;
             font-weight: bold;
@@ -138,7 +140,7 @@
             font-weight: bold;
         }
 
-        /* NOTIFICATIONS */
+        /* ---------- NOTIFICATIONS ---------- */
         .notification {
             background: #fff7e6;
             padding: 12px;
@@ -147,16 +149,77 @@
             border-radius: 4px;
         }
 
-        /* MOBILE */
-        @media (max-width: 900px) {
+        /* ---------- MOBILE RESPONSIVE ---------- */
+        @media (max-width: 768px) {
+
+            body {
+                font-size: 14px;
+            }
+
+            .container {
+                padding: 12px;
+            }
+
             .grid {
                 grid-template-columns: 1fr;
+                gap: 16px;
             }
 
             .navbar {
+                padding: 12px;
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 8px;
+            }
+
+            h1, h3 {
+                font-size: 18px;
+            }
+
+            input {
+                padding: 12px;
+                font-size: 14px;
+            }
+
+            button {
+                padding: 14px;
+                font-size: 16px;
+            }
+
+            /* ----- TABLE → CARD VIEW ----- */
+            table {
+                min-width: 100%;
+            }
+
+            thead {
+                display: none;
+            }
+
+            tbody tr {
+                display: block;
+                margin-bottom: 12px;
+                border-radius: 8px;
+                background: #ffffff;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+                padding: 12px;
+            }
+
+            tbody td {
+                display: flex;
+                justify-content: space-between;
+                padding: 8px 0;
+                border: none;
+            }
+
+            tbody td::before {
+                content: attr(data-label);
+                font-weight: bold;
+                color: #555;
+            }
+
+            tbody td a {
+                color: #4CAF50;
+                font-weight: bold;
             }
         }
     </style>
@@ -164,21 +227,21 @@
 
 <body>
 
-<!-- NAVBAR -->
+<!-- ---------- NAVBAR ---------- -->
 <div class="navbar">
     <h2>Medicine Reminder Dashboard</h2>
     <div>
-        Welcome, <strong>{{ request.user.username }}</strong> |
+        Welcome, <strong>{{ request.user.username }}</strong>
         <a href="{% url 'logout' %}">Logout</a>
     </div>
 </div>
 
-<!-- CONTENT -->
+<!-- ---------- CONTENT ---------- -->
 <div class="container">
 
     <!-- NOTIFICATIONS -->
     <div class="card">
-        <h3> &#128276;Notifications</h3>
+        <h3>🔔 Notifications</h3>
         {% if notifications %}
             {% for note in notifications %}
                 <div class="notification">
@@ -186,7 +249,7 @@
                 </div>
             {% endfor %}
         {% else %}
-            <p>No new notifications </p>
+            <p>No new notifications</p>
         {% endif %}
     </div>
 
@@ -232,18 +295,17 @@
                     </thead>
 
                     <tbody>
-                        {% if obj %}
                         {% for i in obj %}
                         <tr {% if i.days_left <= 1 %} style="background:#ffe5e5;" {% endif %}>
-                            <td>{{ forloop.counter }}</td>
-                            <td>{{ i.med_name }}</td>
-                            <td>{{ i.med_user }}</td>
-                            <td>{{ i.start_date }}</td>
-                            <td>{{ i.per_day_tabs }}</td>
-                            <td>{{ i.total_tablet_count }}</td>
-                            <td>{{ i.total_tabs_packet }}</td>
-                            <td>{{ i.days_left }}</td>
-                            <td>
+                            <td data-label="#"> {{ forloop.counter }} </td>
+                            <td data-label="Medicine">{{ i.med_name }}</td>
+                            <td data-label="Patient">{{ i.med_user }}</td>
+                            <td data-label="Start Date">{{ i.start_date|date:"d M Y" }}</td>
+                            <td data-label="Per Day">{{ i.per_day_tabs }}</td>
+                            <td data-label="Tabs / Packet">{{ i.total_tablet_count }}</td>
+                            <td data-label="Packets">{{ i.total_tabs_packet }}</td>
+                            <td data-label="Days Left">{{ i.days_left }}</td>
+                            <td data-label="Status">
                                 {% if i.days_left <= 1 %}
                                     <span class="status-danger">Refill Now</span>
                                 {% elif i.days_left <= 3 %}
@@ -252,18 +314,18 @@
                                     <span class="status-safe">Sufficient</span>
                                 {% endif %}
                             </td>
-                            <td><a href="{% url 'edit' i.id %}">Edit</a></td>
-                            <td><a href="{% url 'delete' i.id %}">Delete</a></td>
+                            <td data-label="Edit"><a href="{% url 'edit' i.id %}">Edit</a></td>
+                            <td data-label="Delete"><a href="{% url 'delete' i.id %}">Delete</a></td>
                         </tr>
                         {% empty %}
                         <tr>
                             <td colspan="11">No medicines added yet.</td>
                         </tr>
                         {% endfor %}
-                        {% endif %}
                     </tbody>
                 </table>
             </div>
+
         </div>
 
     </div>
