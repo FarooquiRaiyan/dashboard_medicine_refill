@@ -24,10 +24,10 @@ import os
 SECRET_KEY = config('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
-                "dashboardmedicinerefill-production.up.railway.app/",
+                "dashboardmedicinerefill-production.up.railway.app",
                  '*',
                  ]
 
@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'refill_project.wsgi.application'
 
 
 CSRF_TRUSTED_ORIGINS=[
-    "https://dashboardmedicinerefill-production.up.railway.app/",
+    "https://dashboardmedicinerefill-production.up.railway.app",
 ]
 
 # Database
@@ -148,9 +148,9 @@ AUTHENTICATION_BACKENDS =[
 AXES_FAILURE_LIMIT = 5
 AXES_COOLOFF_TIME = 1
 
-SECURE_PROXY_SEEL_HEADER = ('HTTPS_X_FORWARDED_PROTO','https')
+SECURE_PROXY_SSL_HEADER = ('HTTPS_X_FORWARDED_PROTO','https')
 
-CSRF_COOKIER_SECURE = True
+CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
 CSRF_COOKIE_SAMESITE = 'Lax'
