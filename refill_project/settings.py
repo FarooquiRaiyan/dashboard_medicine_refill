@@ -26,7 +26,10 @@ SECRET_KEY = config('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+                'https://dashboardmedicinerefill-production.up.railway.app/',
+                 '*',
+                 ]
 
 
 # Application definition
@@ -74,6 +77,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'refill_project.wsgi.application'
 
+
+CSRF_TRUSTED_ORIGINS=[
+    'https://dashboardmedicinerefill-production.up.railway.app/'
+]
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
